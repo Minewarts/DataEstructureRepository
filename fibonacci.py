@@ -1,3 +1,5 @@
+
+#Secuencia de fibonacci mal optimizada
 '''def fibonacci(numero:int)->int:
     if numero <=0:
         return 0
@@ -10,7 +12,7 @@ numero = int(input('Escriba un numero: '))
 
 print(f'el numero {numero} de la serie de fibonacci es {fibonacci(numero)}')'''
 
-
+#Secuencia de fibonacci optimizada con memoization usando tuplas
 '''def fibonacci(numero:int)->int:
     if numero<=1:
         return (numero,0)
@@ -22,6 +24,7 @@ print(f'el numero {numero} de la serie de fibonacci es {fibonacci(numero)}')'''
 numero = int(input('Escriba un numero: '))
 print(f'el numero {numero} de la serie de fibonacci es {fibonacci(numero)[0]}')'''
 
+#Secuencia de fibonacci optimizada con memoization usando Cache de LRU
 from functools import lru_cache
 
 @lru_cache(maxsize=None)
