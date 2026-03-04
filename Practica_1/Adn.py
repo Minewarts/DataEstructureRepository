@@ -52,18 +52,18 @@ class AlmacenamientoSecuenciaADN:
     def __init__(self):
         self.secuencias:list[SecuenciaADN] = []
 
-    def id_existe(self, lista, id_buscado, acc=0):
-        if acc == len(lista):
-            return False
-        if lista[acc].id == id_buscado:
-            return True
-        return self.id_existe(lista, id_buscado, acc+1)
+        def id_existe(self, id_buscado, acc=0):
+            if acc == len(self.secuencias):
+                return False
+            if self.secuencias[acc]._id == id_buscado:
+                return True
+            return self.id_existe(id_buscado, acc+1)
     
-    def registrar_muestra(self, lista, NuevaMuestra):
-        if self.id_existe(lista, NuevaMuestra.id):
+    def registrar_muestra(self, nueva_muestra):
+        if self.id_existe(nueva_muestra._id):
             print("Secuencia ya en uso")
         else:
-            self.secuencias.append(NuevaMuestra)
+            self.secuencias.append(nueva_muestra)
 
     def contar_patron(self, patron:str, id:int) -> int:
         secuencia=self.obtener_secuencia_por_id(id)
@@ -126,9 +126,9 @@ SecuenciaADN4=SecuenciaADN(4,"Secuencia4","AGCTAGCTAG",2)
 
 
 almacenamiento=AlmacenamientoSecuenciaADN()
-almacenamiento.agregar_secuencia(SecuenciaADN1)
-almacenamiento.agregar_secuencia(SecuenciaADN2)
-almacenamiento.agregar_secuencia(SecuenciaADN3)
-almacenamiento.agregar_secuencia(SecuenciaADN4)
+almacenamiento.registrar_muestra(SecuenciaADN1)
+almacenamiento.registrar_muestra(SecuenciaADN2)
+almacenamiento.registrar_muestra(SecuenciaADN3)
+almacenamiento.registrar_muestra(SecuenciaADN4)
 
 print(SecuenciaADN1.generar_subcadenas())
