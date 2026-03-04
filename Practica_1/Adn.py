@@ -8,7 +8,6 @@ class SecuenciaADN:
         self.riesgo=riesgo
 
     def contar_patron(self, patron:str) -> int:
-        count=0
         len_patron:int=len(patron)
         def contar_patron_recursivo(secuencia:str=self.secuencia) -> int:
             if len(secuencia)<len_patron:
@@ -53,13 +52,18 @@ class AlmacenamientoSecuenciaADN:
     def __init__(self):
         self.secuencias:list[SecuenciaADN] = []
 
-    def agregar_secuencia(self, nueva_secuencia: SecuenciaADN):
-        def append_secuencia(lista:list[SecuenciaADN]=self.secuencias):
-            if not lista:
-                return [nueva_secuencia]
-            return [lista[0]] + append_secuencia(lista[1:])
-        
-        self.secuencias = append_secuencia()
+    def id_existe(self, lista, id_buscado, acc=0):
+        if acc == len(lista):
+            return False
+        if lista[acc].id == id_buscado:
+            return True
+        return self.id_existe(lista, id_buscado, acc+1)
+    
+    def registrar_muestra(self, lista, NuevaMuestra):
+        if self.id_existe(lista, NuevaMuestra.id):
+            print("Secuencia ya en uso")
+        else:
+            self.secuencias.append(NuevaMuestra)
 
     def contar_patron(self, patron:str, id:int) -> int:
         secuencia=self.obtener_secuencia_por_id(id)
