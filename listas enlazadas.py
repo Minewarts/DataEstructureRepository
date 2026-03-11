@@ -2,14 +2,20 @@
    Cada nodo contiene datos y un puntero (referencia) al siguiente nodo, permitiendo inserciones y eliminaciones 
    rápidas al actualizar los enlaces. Se accede secuencialmente empezando desde la cabeza (primer nodo).'''
 
-''' prepend: Agrega un nuevo nodo al inicio de la lista.
-    append: Agrega un nuevo nodo al final de la lista.
-    remove_first: Elimina el primer nodo de la lista.
-    remove_last: Elimina el último nodo de la lista.
-    get_first: Devuelve el valor del primer nodo.
-    get_last: Devuelve el valor del último nodo.
-    is_empty: Verifica si la lista está vacía.
-    size: Devuelve el número de nodos en la lista.'''
+''' 
+  Funciones:
+- prepend: Agrega un nuevo nodo al inicio de la lista.
+- append: Agrega un nuevo nodo al final de la lista.
+- get_by_index: Devuelve el nodo en la posición especificada.
+- insert_at_index: Inserta un nuevo nodo en la posición especificada.
+- search_value: Busca un valor específico en la lista y devuelve True si se encuentra, de lo contrario, devuelve False.
+- remove_first: Elimina el primer nodo de la lista y devuelve el nodo eliminado.
+- remove_last: Elimina el último nodo de la lista y devuelve el nodo eliminado.
+- clear: Elimina todos los nodos de la lista, dejando la lista vacía.
+- generate_random: Genera una lista enlazada con un número específico de nodos, cada uno con un valor aleatorio dentro de un rango dado.
+- return_n_to_last: Devuelve el nodo que se encuentra n posiciones desde el final de la lista.
+- reverse: Invierte el orden de los nodos en la lista enlazada cambiando el puntero de cada nodo.
+'''
 
 
 class Node:
@@ -185,24 +191,50 @@ class LinkedList:
         self.__tail = None
         self.__size = 0
 
+    def generate_random(self, size, min_value, max_value):
+        import random
+        for _ in range(size):
+            random_value = random.randint(min_value, max_value)
+            self.append(random_value)
 
+    def return_n_to_last(self, n):
+        if n < 1 or n > self.__size:
+            raise ValueError("n debe ser un número positivo menor o igual al tamaño de la lista.")
+        
+        target_index = self.__size - n
+        return self.get_by_index(target_index)
+    
+    def reverse(self):
+        prev_node = None
+        current_node = self.__head
+        self.__tail = self.__head  # El nodo actual de la cabeza se convertirá en la nueva cola
+
+        while current_node is not None:
+            next_node = current_node.next  # Guardar el siguiente nodo
+            current_node.next = prev_node  # Invertir el enlace
+
+            #Siguientes pasos para avanzar en la lista
+
+            prev_node = current_node       # Mover prev_node al nodo actual
+            current_node = next_node       # Mover al siguiente nodo
+        
+        self.__head = prev_node  # El último nodo procesado será la nueva cabeza
+
+    def organize_by_pair_or_odd_position(self):
+        odd_node=self.__head
+        even_node=self.__head.next
+
+        while even_node is not None and even_node.next is not None:
+            odd_node.next=even_node.next
+            odd_node=odd_node.next
+            even_node.next=odd_node.next
+            even_node=even_node.next
+
+
+        odd_node.next=self.__head.next
+        even_node.next=None
 
 custom_list = LinkedList()
-custom_list.prepend(10)
-custom_list.append(40)
-custom_list.append(50)
-custom_list.prepend(5)
-custom_list.append(60)
-custom_list.insert_at_index(3, 25)
-#custom_list.remove_first()
-#custom_list.remove_last()
-
-print("despues del primer append: ", custom_list)
-print ("custom_list.head.data: ", custom_list.head.data)
-print ("custom_list.tail.data: ", custom_list.tail.data)
-print("get_by_index: ", custom_list.get_by_index(2).data)
-print("get_by_index: ", custom_list.get_by_index(3).data)
-print("size: ", custom_list.size)
-
-custom_list2 = LinkedList()
-custom_list2.remove_first()
+custom_list.generate_random(5, 1, 10)
+print(custom_list)
+print(custom_list.organize_by_pair_or_odd_position())
