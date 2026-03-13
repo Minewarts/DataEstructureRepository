@@ -17,6 +17,7 @@
 - reverse: Invierte el orden de los nodos en la lista enlazada cambiando el puntero de cada nodo.
 '''
 
+import random
 
 class Node:
     def __init__(self, data):
@@ -234,7 +235,89 @@ class LinkedList:
         odd_node.next=self.__head.next
         even_node.next=None
 
+def add_same_node(list1, list2, number, min, max):
+    for _ in range(number):
+        new_node = Node(random.randint(min, max))
+
+        # Agregar el nodo a la primera lista
+        if list1.tail is None:
+            list1.head = new_node
+        else:
+            list1.tail.next = new_node
+        list1.tail = new_node
+        list1._LinkedList__size += 1
+
+        # Agregar el mismo nodo a la segunda lista
+        if list2.tail is None:
+            list2.head = new_node
+        else:
+            list2.tail.next = new_node
+        list2.tail = new_node
+        list2._LinkedList__size += 1
+
+def search_intersected_node(list1,list2):
+
+    #1, validar si las listas se intersectan, es decir, si tienen algún nodo en común
+    if list1.tail is not list2.tail:
+        return None  
+    
+    #2, si se intersectan, determinar la lista mas corta, y la mas larga
+    longest_list = list1 if list1.size >= list2.size else list2
+    shortest_list = list2 if longest_list is list1 else list1
+
+    print('\nlongest list:', longest_list)
+    print('shortest list:', shortest_list)
+
+    #3, calcular la diferencia de tamaño entre las dos listas
+    size_difference = longest_list.size - shortest_list.size
+    print('size difference:', size_difference)
+
+    #4, avanzar el puntero de la lista mas larga la cantidad de veces igual a la diferencia de tamaño
+    shortest_current = shortest_list.head
+    longest_current = longest_list.head
+    for _ in range(size_difference):
+        longest_current = longest_current.next
+
+    print('\nlongest current after advancing:', longest_current.data)
+    print('shortest current:', shortest_current.data)
+
+    #5, Iterar ambas listas hasta encontrar el nodo común, que será el nodo de intersección
+    while longest_current is not shortest_current:
+        longest_current = longest_current.next
+        shortest_current = shortest_current.next
+
+    return longest_current.data if longest_current is not None else None
+
+def plus_lists(list1, list2):
+    result_list= LinkedList()
+    current_node1 = list1.head
+    current_node2 = list2.head
+    carry = 0
+
+    while current_node1 and current_node2:
+
+        sum = int (current_node1.data) + int(current_node2.data) + carry
+        result_list.append(sum % 10)
+        carry = sum // 10
+
+        current_node1 = current_node1.next
+        current_node2 = current_node2.next
+
+    
+    result_list.append(carry) if carry > 0 else None
+
+    return result_list
+
 custom_list = LinkedList()
-custom_list.generate_random(5, 1, 10)
-print(custom_list)
-print(custom_list.organize_by_pair_or_odd_position())
+custom_list.generate_random(3, 1, 9)
+custom_list_2 = LinkedList()
+custom_list_2.generate_random(3, 1, 9)
+
+print("Lista 1:", custom_list)
+print("Lista 2:", custom_list_2)
+
+print("\nSuma de las dos listas:", plus_lists(custom_list, custom_list_2))
+
+
+
+
