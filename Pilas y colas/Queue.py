@@ -1,5 +1,3 @@
-import random
-
 class QueueNode:
   __slots__ = ('dato','next')
 
@@ -35,9 +33,6 @@ class Queue:
     self._size -= 1
     return nodo.dato
   
-  def generate(self, n, min_value=0, max_value=100):
-    for _ in range(n):
-      self.inQueue(random.randint(min_value, max_value))
 
   def __str__(self):
     result = []
