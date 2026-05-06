@@ -63,3 +63,7 @@ def insert_node_bt(root, newdata):
             return root
         aux_queue.enqueue(cur_root.rightchild)
 
+
+#Eliminación
+
+
