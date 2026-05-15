@@ -1,0 +1,27 @@
+Arista es el conector, y el vertice es la informacion
+
+Grafos Ponderados y noPonderados:
+Las atrista sostienen un peso pero los grafos no ponderados no tienen un peso asociado 
+los grafos ponderados tienen un peso asociado a las aristas
+
+
+Grafos no dirigidos y dirigidos:
+los grafos no dirigidos conectan dos vertices de manera bidireccional a diferencia de los grafos dirigidos
+
+Un Grafo Ciclicio es aquel que tiene almenos un ciclo, donde uno hace mas de dos saltos a vertices diferentes y puede volver al mismo punto
+y un grafo aciclico es lo contrario
+
+Un Arbol es una especie de subCategori de un grafo dirigido
+
+formas para representar el grafo
+Matriz de Adyacencia: Guarda la informacion del grafo en una matriz, si el grafo tiene pocas aristas no es la mejor opcion, ya que tiene
+que recorrer toda la matriz de todas formas, si el grafo es no dirigido es una matriz de tipo simetrica
+la matriz ponderada en vez de colocar uno es la matriz se coloca el peso, y en vez de cero se coloca -1
+
+En diccionario:
+
+
+los grafos se pueden recorrer de dos formas, en profundida y por anchura, en profundida terminas de recorrer todas las conexiones de una de mis conexiones, entonces recorro la otra conexion, y por anchura voy recorriendo primero todas mis conexiones, luego recorro todas las conexiones de mis conexiones y asi hasta recorrer todos los vertices
+
+
+
