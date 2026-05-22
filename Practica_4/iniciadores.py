@@ -37,6 +37,16 @@ def in_order(root):
   in_order(root.rightchild)
 
 
+def reverse_in_order(root):
+
+  if root is None:
+    return
+
+  reverse_in_order(root.rightchild)
+  print(root.data)
+  reverse_in_order(root.leftchild)
+
+
 #Clase base  Cola
 import random
 
@@ -230,11 +240,10 @@ def level_order(root):
       aux_queue.enqueue(cur_root.rightchild)
 
 def insert_node_bst(root, newdata):
-
   if root is None:
     return BinaryTreeNode(newdata)
 
-  if newdata < root.data:
+  if newdata.id < root.data.id:
     root.leftchild = insert_node_bst(root.leftchild, newdata)
   else:
     root.rightchild = insert_node_bst(root.rightchild, newdata)
@@ -271,37 +280,25 @@ def max_sucessor(root):
   return root
 
 
-def delete_node_bst(root,value_to_delete):
-
+def delete_node_bst(root, value_to_delete):
   if root is None:
     return None
 
-  print("Recorrido arbol : ", root.data)
-
-  if value_to_delete < root.data:
-    root.leftchild = delete_node_bst(root.leftchild,value_to_delete)
-  elif value_to_delete > root.data:
-    root.rightchild = delete_node_bst(root.rightchild,value_to_delete)
+  if value_to_delete < root.data.id:
+    root.leftchild = delete_node_bst(root.leftchild, value_to_delete)
+  elif value_to_delete > root.data.id:
+    root.rightchild = delete_node_bst(root.rightchild, value_to_delete)
   else:
-    #caso 1, nodo a eliminar es una hoja
     if root.leftchild is None and root.rightchild is None:
-      print("caso 1, nodo a eliminar es una hoja")
       return None
-    #caso 2, nodo a eliminar tiene 2 hijos
     elif root.leftchild and root.rightchild:
-      print("caso 2, nodo a eliminar tiene 2 hijos")
       sucessor = min_sucessor(root.rightchild)
       temp_value = sucessor.data
-      print("Sucesor encontrado : ", temp_value)
-      delete_node_bst(root,temp_value)
+      root.rightchild = delete_node_bst(root.rightchild, temp_value.id)
       root.data = temp_value
-    #caso 3, nodo a eliminar tiene 1 hijo izq
     elif root.leftchild:
-      print("caso 3, nodo a eliminar tiene 1 hijo izq")
       return root.leftchild
-    #caso 4, nodo a eliminar tiene 1 hijo derecha
     else:
-      print("caso 4, nodo a eliminar tiene 1 hijo derecha")
       return root.rightchild
 
   return root

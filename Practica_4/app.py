@@ -1,29 +1,43 @@
-from iniciadores import BinaryTreeNode, insert_node_bst, delete_node_bst, reverse_in_order
+from iniciadores import BinaryTreeNode, insert_node_bst, delete_node_bst, reverse_in_order, Queue
+
 
 class Medicamento:
-    def __init__(self, id_med, nombre, stock, año_vencimiento, precio):
+    def __init__(self, id_med, nombre, stock, anio_vencimiento, precio):
         self.id = id_med
         self.nombre = nombre
         self.stock = stock
-        self.año_vencimiento = año_vencimiento
+        self.anio_vencimiento = anio_vencimiento
         self.precio = precio
 
+    def __str__(self):
+        return f"ID: {self.id} | Nombre: {self.nombre} | Stock: {self.stock} | Vence: {self.anio_vencimiento} | Precio: ${self.precio:.2f}"
 
 # Variables Globales de Estado
-contador_alertas = 0
-valor_total_inventario = 0.0
-total_operaciones_fusion = 0
+CONTADOR_ALERTAS = 0
+VALOR_TOTAL_INVENTARIO = 0.0
+TOTAL_OPERACIONES_FUSION = 0
 
 # --- FUNCIONES DE BÚSQUEDA ---
 def find_node_by_id(root, target_id):
     if root is None:
         return None
-    if root.data.id == target_id:
-        return root
-    elif target_id < root.data.id:
-        return find_node_by_id(root.leftchild, target_id)
-    else:
-        return find_node_by_id(root.rightchild, target_id)
+
+    aux_queue = Queue()
+    aux_queue.enqueue(root)
+
+    while not aux_queue.is_empty():
+        cur_root = aux_queue.dequeue()
+
+        if cur_root.data.id == target_id:
+            return cur_root
+
+        if cur_root.leftchild:
+            aux_queue.enqueue(cur_root.leftchild)
+
+        if cur_root.rightchild:
+            aux_queue.enqueue(cur_root.rightchild)
+
+    return None
 
 def find_successor(root, target_id):
     succ = None
@@ -61,15 +75,15 @@ def find_predecessor(root, target_id):
             break
     return pred
 
-def find_expired_id(root, año_actual):
+def find_expired_id(root, anio_actual):
     if root is None:
         return None
-    if root.data.año_vencimiento <= año_actual:
+    if root.data.anio_vencimiento <= anio_actual:
         return root.data.id
-    left_res = find_expired_id(root.leftchild, año_actual)
+    left_res = find_expired_id(root.leftchild, anio_actual)
     if left_res is not None:
         return left_res
-    return find_expired_id(root.rightchild, año_actual)
+    return find_expired_id(root.rightchild, anio_actual)
 
 def range_query_bst(root, low, high):
     if root is None:
@@ -83,7 +97,7 @@ def range_query_bst(root, low, high):
 
 
 # --- FUNCIONES CONTROLADORAS (LÓGICA DE NEGOCIO) ---
-def registrar_medicamento(root, id_med, nombre, stock, año_vencimiento, precio):
+def registrar_medicamento(root, id_med, nombre, stock, anio, precio):
     global CONTADOR_ALERTAS, VALOR_TOTAL_INVENTARIO
     
     if find_node_by_id(root, id_med) is not None:
@@ -94,7 +108,7 @@ def registrar_medicamento(root, id_med, nombre, stock, año_vencimiento, precio)
         precio = precio * 0.90
         print(f"Regla Especial: ID par detectado ({id_med}). Se aplicó un 10% de descuento.")
 
-    nuevo_med = Medicamento(id_med, nombre, stock, año_vencimiento, precio)
+    nuevo_med = Medicamento(id_med, nombre, stock, anio, precio)
     root = insert_node_bst(root, nuevo_med)
 
     VALOR_TOTAL_INVENTARIO += precio * stock
@@ -173,12 +187,12 @@ def consolidar_inventario(root, id_origen, id_destino):
     print(f"Fusión exitosa: El stock del ID {id_origen} se movió al ID {id_destino}.")
     return root
 
-def ejecutar_limpieza_caducidad(root, año_actual):
+def ejecutar_limpieza_caducidad(root, anio_actual):
     global CONTADOR_ALERTAS, VALOR_TOTAL_INVENTARIO
     
     eliminados = 0
     while True:
-        expired_id = find_expired_id(root, año_actual)
+        expired_id = find_expired_id(root, anio_actual)
         if expired_id is None:
             break
         nodo = find_node_by_id(root, expired_id)
