@@ -37,16 +37,6 @@ def in_order(root):
   in_order(root.rightchild)
 
 
-def reverse_in_order(root):
-
-  if root is None:
-    return
-
-  reverse_in_order(root.rightchild)
-  print(root.data)
-  reverse_in_order(root.leftchild)
-
-
 #Clase base  Cola
 import random
 
@@ -220,85 +210,5 @@ class Queue:
     result = [str(nodo.value) for nodo in self.__q]
     return ' -- '.join(result)
 
-def level_order(root):
-  if root is None:
-    return
-
-  aux_queue = Queue()
-  aux_queue.enqueue(root)
-
-  while not aux_queue.is_empty():
-    #print("cola antes de iniciar el ciclo : ", aux_queue)
-    cur_root = aux_queue.dequeue()
-
-    print(cur_root.data)
-
-    if cur_root.leftchild:
-      aux_queue.enqueue(cur_root.leftchild)
-
-    if cur_root.rightchild:
-      aux_queue.enqueue(cur_root.rightchild)
-
-def insert_node_bst(root, newdata):
-  if root is None:
-    return BinaryTreeNode(newdata)
-
-  if newdata.id < root.data.id:
-    root.leftchild = insert_node_bst(root.leftchild, newdata)
-  else:
-    root.rightchild = insert_node_bst(root.rightchild, newdata)
-
-  return root
-
-def search_node_bst(root, value_to_find):
-
-  if root is None:
-    return "El valor {} NO fue encontrado ó arbol vacio".format(value_to_find)
-
-  print("Recorrido del arbol : ", root.data)
-  if value_to_find == root.data:
-    return "El valor {} SI fue encontrado".format(value_to_find)
-  elif value_to_find < root.data:
-    return search_node_bst(root.leftchild, value_to_find)
-  else:
-    return search_node_bst(root.rightchild, value_to_find)
-  
-
-def min_sucessor(root):
-
-  if root.leftchild:
-    return min_sucessor(root.leftchild)
-  print("min Sucesor : ", root.data)
-  return root
-
-def max_sucessor(root):
-
-  if root.rightchild:
-    return max_sucessor(root.rightchild)
-
-  print("max Sucesor : ", root.data)
-  return root
 
 
-def delete_node_bst(root, value_to_delete):
-  if root is None:
-    return None
-
-  if value_to_delete < root.data.id:
-    root.leftchild = delete_node_bst(root.leftchild, value_to_delete)
-  elif value_to_delete > root.data.id:
-    root.rightchild = delete_node_bst(root.rightchild, value_to_delete)
-  else:
-    if root.leftchild is None and root.rightchild is None:
-      return None
-    elif root.leftchild and root.rightchild:
-      sucessor = min_sucessor(root.rightchild)
-      temp_value = sucessor.data
-      root.rightchild = delete_node_bst(root.rightchild, temp_value.id)
-      root.data = temp_value
-    elif root.leftchild:
-      return root.leftchild
-    else:
-      return root.rightchild
-
-  return root
